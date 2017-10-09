@@ -1,0 +1,32 @@
+version: '2'
+services:
+  app:
+    image: aparabolica/liane:latest
+    # Comment-out below to pull image from docker hub
+    build: .
+    # Comment-out below for production
+    command: nodemon src/
+    links:
+      - postgres
+    ports:
+    - 3030:3030
+    volumes:
+    # Development volumes. Comment-out for production
+    - /src/node_modules
+    - .:/src
+    # Uncomment below for production (persist app data)
+    # - ./files:/src/files
+    # - ./public:/src/public
+    environment:
+      NODE_ENV: development
+  postgres:
+    image: postgres:alpine
+    # Uncomment below for production (persist database)
+    # volumes:
+    # - ./database:/var/lib/postgresql/data
+    ports:
+    - 15432:5432
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: ''
+      POSTGRES_DB: 'liane'
