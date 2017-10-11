@@ -9,9 +9,7 @@ class UserFBAccounts extends Component {
     this.selectAccount = this.selectAccount.bind(this);
   }
   componentWillReceiveProps (nextProps) {
-    console.log('receiving props');
     if(nextProps.auth.signedIn && !this.queriedAccount) {
-      console.log('findaccount');
       this.props.findAccount();
       this.queriedAccount = true;
     }
@@ -29,7 +27,6 @@ class UserFBAccounts extends Component {
   }
   render () {
     const { auth, campaign, account } = this.props;
-    console.log(account);
     if(account) {
       return (
         <section id="campaign-account">
