@@ -11,11 +11,38 @@ module.exports = function () {
   // Set up authentication with the secret
   app.configure(authentication(config));
   app.configure(jwt());
-  app.configure(local(config.local));
+  app.configure(local({
+    entity: 'user',
+    service: 'users',
+    usernameField: 'email',
+    passwordField: 'password'
+  }));
 
   app.configure(oauth2(Object.assign({
     name: 'facebook',
-    Strategy: FacebookStrategy
+    Strategy: FacebookStrategy,
+    authType: 'rerequest',
+    successRedirect: '/',
+    profileFields: [
+      'id',
+      'displayName',
+      'first_name',
+      'last_name',
+      'email',
+      'gender',
+      'profileUrl',
+      'accounts',
+      'birthday',
+      'picture',
+      'permissions'
+    ],
+    scope: [
+      'public_profile',
+      'email',
+      'user_friends',
+      'manage_pages',
+      'pages_show_list'
+    ]
   }, config.facebook)));
 
   // The `authentication` service is used to create a JWT.

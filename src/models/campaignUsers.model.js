@@ -5,16 +5,17 @@ const DataTypes = Sequelize.DataTypes;
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const campaigns = sequelizeClient.define('campaigns', {
-    name: {
-      type: DataTypes.STRING,
+  const campaignUsers = sequelizeClient.define('campaignUsers', {
+    role: {
+      type: DataTypes.ENUM(
+        'owner',
+        'manager'
+      ),
       allowNull: false
     }
   });
-  campaigns.associate = function(models) {
-    campaigns.belongsToMany(models.users, {
-      through: models.campaignUsers
-    });
-  };
-  return campaigns;
+  // campaignUsers.sync({
+  //   force: true
+  // });
+  return campaignUsers;
 };

@@ -108,6 +108,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # Others
+public/
 lib/
 data/
 docker-compose.dev.yml

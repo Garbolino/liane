@@ -1,12 +1,14 @@
 // Initializes the `campaigns` service on path `/campaigns`
 const createService = require('feathers-sequelize');
 const createModel = require('../../models/campaigns.model');
+const createCampaignUsersModel = require('../../models/campaignUsers.model');
 const hooks = require('./campaigns.hooks');
 const filters = require('./campaigns.filters');
 
 module.exports = function () {
   const app = this;
   const Model = createModel(app);
+  const CampaignUsersModel = createCampaignUsersModel(app);
   const paginate = app.get('paginate');
 
   const options = {
