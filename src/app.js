@@ -31,7 +31,15 @@ app.configure(configuration(path.join(__dirname, '..')));
 app.use(cors());
 app.use(helmet());
 app.use(compress());
-app.use(bodyParser.json());
+
+// Use json body parser when content is `application/json` type and request headers does not include `x-hub-signature`
+app.use(bodyParser.json({
+  type: req => req.headers['content-type'] == 'aplication/json' && !req.headers['x-hub-signature']
+}));
+// Use raw body parser when headers include `x-hub-signature`
+app.use(bodyParser.raw({
+  type: req => !!req.headers['x-hub-signature']
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set up Plugins and providers
@@ -40,7 +48,7 @@ app.configure(postgres);
 app.configure(rest());
 app.configure(socketio());
 
-// app.configure(facebook);
+app.configure(facebook);
 app.configure(authentication);
 
 // Set up our services (see `services/index.js`)

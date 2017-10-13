@@ -67,6 +67,7 @@
     "serve-favicon": "^2.4.5",
     "socket.io-client": "^2.0.3",
     "styled-components": "^2.2.1",
+    "uws": "^8.14.1",
     "winston": "^2.4.0"
   },
   "devDependencies": {

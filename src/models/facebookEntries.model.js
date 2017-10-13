@@ -4,27 +4,30 @@ const Sequelize = require('sequelize');
 
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
-  const facebookAccounts = sequelizeClient.define('facebookAccounts', {
+  const facebookEntries = sequelizeClient.define('facebookEntries', {
     facebookId: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    name: {
+    type: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    category: {
+    message: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    mediaId: {
       type: Sequelize.STRING
     },
-    accessToken: {
-      type: Sequelize.STRING,
-      allowNull: false
+    link: {
+      type: Sequelize.STRING
     }
   });
-  facebookAccounts.associate = function(models) {
-    facebookAccounts.belongsTo(models.campaigns, {
-      foreignKey: 'campaignId'
+  facebookEntries.associate = function(models) {
+    facebookEntries.belongsTo(models.facebookAccounts, {
+      foreignKey: 'accountId'
     });
   };
-  return facebookAccounts;
+  return facebookEntries;
 };

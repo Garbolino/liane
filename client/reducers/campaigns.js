@@ -9,11 +9,18 @@ const initialState = null;
 export default function reducer (state = initialState, action) {
   switch(action.type) {
     case CAMPAIGN_CREATE_SUCCESS :
-    case CAMPAIGN_GET_SUCCESS : {
-      return action.data;
-    }
+    case CAMPAIGN_GET_SUCCESS :
     case CAMPAIGN_FIND_SUCCESS : {
-      return action.data[0];
+      if(Array.isArray(action.data)) {
+        if(action.data[0]) {
+          return action.data[0];
+        } else {
+          return null;
+        }
+      } else if(action.data) {
+        return action.data;
+      }
+      return null;
     }
     default :
       return state;
