@@ -52,17 +52,25 @@ module.exports = function () {
         entry.changes.forEach(item => {
           if(item.field == 'feed') {
             const value = item.value;
-            if(value.item == 'comment') {
-              console.log('Comment update');
-            } else {
-              promises.push(service.create({
-                accountId,
-                facebookId: value.post_id,
-                type: value.item,
-                message: value.message,
-                link: value.link,
-                mediaId: value[`${value.item}_id`]
-              }));
+            switch(value.verb) {
+              case 'add':
+                if(value.item == 'comment') {
+                  console.log('Comment update');
+                } else {
+                  console.log('new entry', value);
+                  promises.push(service.create({
+                    accountId,
+                    facebookId: value.post_id,
+                    type: value.item,
+                    parentId: value.parent_id,
+                    message: value.message,
+                    link: value.link,
+                    objectId: value[`${value.item}_id`]
+                  }));
+                }
+                break;
+              case 'remove':
+                break;
             }
           }
         });

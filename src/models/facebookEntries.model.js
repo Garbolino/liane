@@ -13,11 +13,13 @@ module.exports = function (app) {
       type: Sequelize.STRING,
       allowNull: false
     },
-    message: {
-      type: Sequelize.STRING,
-      allowNull: false
+    parentId: {
+      type: Sequelize.STRING
     },
-    mediaId: {
+    objectId: {
+      type: Sequelize.STRING
+    },
+    message: {
       type: Sequelize.STRING
     },
     link: {
