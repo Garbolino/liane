@@ -5,6 +5,9 @@ const commonHooks = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const { hashPassword } = require('feathers-authentication-local').hooks;
 
+const parseFacebookData = require('./parseFacebookData');
+const extendFBToken = require('./extendFBToken');
+
 const restrict = [
   authenticate('jwt'),
   restrictToOwner({
@@ -12,6 +15,7 @@ const restrict = [
     ownerField: 'id'
   })
 ];
+
 
 const populateCampaign = function () {
   return function (hook) {
@@ -44,54 +48,31 @@ const populateCampaign = function () {
   };
 };
 
-const storeFacebookData = hook => {
-  const service = hook.app.service('users');
-  const facebookData = hook.data.facebook;
-  if(facebookData !== undefined) {
-    hook.data.facebookData = {
-      ...hook.data.facebook.profile._json,
-      accessToken: hook.data.facebook.accessToken
-    };
-    if(!hook.data.email) {
-      return service.find({
-        facebookId: facebookData.profile.id
-      }).then(res => {
-        if(res.data.length) {
-          const user = res.data[0];
-          if(!user.email) {
-            hook.data.email = hook.data.facebookData.email;
-          }
-        } else {
-          hook.data.email = hook.data.facebookData.email;
-        }
-        return hook;
-      });
-    }
-  } else {
-    return hook;
-  }
-};
 
 
 module.exports = {
   before: {
     all: [
       // populateCampaign()
+      ...restrict
     ],
     find: [ authenticate('jwt') ],
-    get: [ ...restrict ],
+    get: [],
     create: [
-      storeFacebookData,
+      parseFacebookData(),
+      extendFBToken(),
       hashPassword()
     ],
     update: [
       ...restrict,
-      storeFacebookData,
+      parseFacebookData(),
+      extendFBToken(),
       hashPassword()
     ],
     patch: [
       ...restrict,
-      storeFacebookData,
+      parseFacebookData(),
+      extendFBToken(),
       hashPassword()
     ],
     remove: [ ...restrict ]
@@ -106,7 +87,16 @@ module.exports = {
       )
     ],
     find: [],
-    get: [],
+    get: [
+      // hook => {
+      //   const FB = hook.app.facebook;
+      //   FB.setAccessToken(hook.result.facebookData.accessToken);
+      //   return FB.api('me/adaccounts').then(data => {
+      //     console.log(data);
+      //     return hook;
+      //   });
+      // }
+    ],
     create: [],
     update: [],
     patch: [],

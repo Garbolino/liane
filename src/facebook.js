@@ -10,6 +10,7 @@ module.exports = function() {
   app.set('fbVerifyToken', crypto.randomBytes(12).toString('hex'));
 
   FB.options({
+    version: 'v2.10',
     appId: clientID,
     appSecret: clientSecret
   });
@@ -25,7 +26,12 @@ module.exports = function() {
     FB.api(clientID + '/subscriptions', 'post', {
       object: 'page',
       callback_url: url + '/facebookAccounts/subscriptions',
-      fields: ['conversations', 'feed'],
+      fields: [
+        'feed',
+        'messages',
+        'ratings',
+        'mention'
+      ],
       verify_token: app.get('fbVerifyToken')
     });
   });

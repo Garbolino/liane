@@ -1,8 +1,8 @@
 // Initializes the `users` service on path `/users`
 const createService = require('feathers-sequelize');
-const createModel = require('../../models/users.model');
-const hooks = require('./users.hooks');
-const filters = require('./users.filters');
+const createModel = require('./model');
+const hooks = require('./hooks');
+const filters = require('./filters');
 
 module.exports = function () {
   const app = this;

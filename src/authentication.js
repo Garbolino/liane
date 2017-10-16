@@ -21,7 +21,7 @@ module.exports = function () {
   app.configure(oauth2(Object.assign({
     name: 'facebook',
     Strategy: FacebookStrategy,
-    authType: 'rerequest',
+    // authType: 'rerequest',
     successRedirect: '/',
     profileFields: [
       'id',

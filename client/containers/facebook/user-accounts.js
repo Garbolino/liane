@@ -28,7 +28,7 @@ class UserFBAccounts extends Component {
   }
   render () {
     const { auth, campaign, account } = this.props;
-    if(account) {
+    if(auth.signedIn && account) {
       return (
         <section id="campaign-account">
           <h3>Facebook Account: {account.name}</h3>

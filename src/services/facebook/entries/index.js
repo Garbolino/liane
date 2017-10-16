@@ -1,8 +1,8 @@
 // Initializes the `facebookEntries` service on path `/facebookEntries`
 const createService = require('feathers-sequelize');
-const createModel = require('../../models/facebookEntries.model');
-const hooks = require('./facebookEntries.hooks');
-const filters = require('./facebookEntries.filters');
+const createModel = require('./model');
+const hooks = require('./hooks');
+const filters = require('./filters');
 
 module.exports = function () {
   const app = this;

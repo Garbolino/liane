@@ -2,9 +2,9 @@
 const crypto = require('crypto');
 const bodyParser = require('body-parser');
 const createService = require('feathers-sequelize');
-const createModel = require('../../models/facebookAccounts.model');
-const hooks = require('./facebookAccounts.hooks');
-const filters = require('./facebookAccounts.filters');
+const createModel = require('./model');
+const hooks = require('./hooks');
+const filters = require('./filters');
 
 module.exports = function () {
   const app = this;
@@ -46,36 +46,47 @@ module.exports = function () {
     } else if(body.object == 'page') {
       // Subscription update
       const service = app.service('facebookEntries');
+      const accountService = app.service('facebookAccounts');
       let promises = [];
       body.entry.forEach(entry => {
-        const accountId = entry.id;
-        entry.changes.forEach(item => {
-          if(item.field == 'feed') {
-            const value = item.value;
-            switch(value.verb) {
-              case 'add':
-                if(value.item == 'comment') {
-                  console.log('Comment update');
-                } else {
-                  console.log('new entry', value);
-                  promises.push(service.create({
-                    accountId,
-                    facebookId: value.post_id,
-                    type: value.item,
-                    parentId: value.parent_id,
-                    message: value.message,
-                    link: value.link,
-                    objectId: value[`${value.item}_id`]
-                  }));
+        const facebookId = entry.id;
+        const entryPromise = new Promise((resolve, reject) => {
+          accountService.find({ facebookId }).then(res => {
+            let entryPromises = [];
+            if(res.data.length) {
+              const account = res.data[0];
+              entry.changes.forEach(item => {
+                switch(item.field) {
+                  case 'feed':
+                  const value = item.value;
+                  switch(value.verb) {
+                    case 'add':
+                      if(value.item == 'comment') {
+                        console.log('Comment update');
+                      } else {
+                        console.log('new entry', value);
+                        entryPromises.push(service.create({
+                          accountId: account.id,
+                          facebookId: value.post_id
+                        }, {
+                          fbAccessToken: account.accessToken
+                        }));
+                      }
+                      break;
+                    case 'remove':
+                      break;
+                  }
+                  break;
                 }
-                break;
-              case 'remove':
-                break;
+              });
             }
-          }
+            Promise.all(entryPromises).then(resolve).catch(reject);
+          });
         });
+        promises.push(entryPromise);
       });
       Promise.all(promises).then(() => {
+        console.log('finished');
         res.sendStatus(200);
       }).catch(err => {
         res.status(err.code).send(err);
