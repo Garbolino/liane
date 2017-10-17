@@ -1,11 +1,13 @@
+const parseFacebookData = require('./parseFacebookData');
+
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [],
-    update: [],
-    patch: [],
+    create: [ parseFacebookData() ],
+    update: [ parseFacebookData() ],
+    patch: [ parseFacebookData() ],
     remove: []
   },
 

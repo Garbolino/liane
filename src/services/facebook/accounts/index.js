@@ -51,7 +51,7 @@ module.exports = function () {
       body.entry.forEach(entry => {
         const facebookId = entry.id;
         const entryPromise = new Promise((resolve, reject) => {
-          accountService.find({ facebookId }).then(res => {
+          accountService.find({query: { facebookId }}).then(res => {
             let entryPromises = [];
             if(res.data.length) {
               const account = res.data[0];

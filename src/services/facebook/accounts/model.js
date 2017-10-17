@@ -25,6 +25,13 @@ module.exports = function (app) {
     facebookAccounts.belongsTo(models.campaigns, {
       foreignKey: 'campaignId'
     });
+    facebookAccounts.belongsToMany(models.people, {
+      through: {
+        model: models.interactions,
+        unique: false
+      },
+      constraints: false
+    });
   };
   return facebookAccounts;
 };

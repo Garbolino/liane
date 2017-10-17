@@ -1,6 +1,5 @@
 module.exports = function() {
   return function (hook) {
-    console.log(hook.data);
     const service = hook.app.service('users');
     const facebookData = hook.data.facebook;
     if(facebookData !== undefined) {
@@ -10,7 +9,9 @@ module.exports = function() {
       };
       if(!hook.data.email) {
         return service.find({
-          facebookId: facebookData.profile.id
+          query: {
+            facebookId: facebookData.profile.id
+          }
         }).then(res => {
           if(res.data.length) {
             const user = res.data[0];

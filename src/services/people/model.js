@@ -12,8 +12,12 @@ module.exports = function (app) {
     facebookData: { type: DataTypes.JSON }
   });
   people.associate = function(models) {
-    people.belongsToMany(models.campaigns, {
-      through: models.interactions
+    people.belongsToMany(models.facebookAccounts, {
+      through: {
+        model: models.interactions,
+        unique: false
+      },
+      constraints: false
     });
   };
   return people;

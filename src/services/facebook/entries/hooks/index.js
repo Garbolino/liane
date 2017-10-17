@@ -1,9 +1,9 @@
 const commonHooks = require('feathers-hooks-common');
 const { authenticate } = require('feathers-authentication').hooks;
 
-const associateAccount = require('./associateAccount');
 const fetch = require('./fetch');
 const fetchInteractions = require('./fetchInteractions');
+const associateAccount = require('./associateAccount');
 
 const restrict = [
   commonHooks.disallow('external')
@@ -14,7 +14,7 @@ module.exports = {
     all: [ ...restrict ],
     find: [],
     get: [],
-    create: [ fetch(), associateAccount() ],
+    create: [ fetch() ],
     update: [],
     patch: [],
     remove: []
@@ -24,7 +24,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [ associateAccount() ],
+    create: [ associateAccount(), fetchInteractions() ],
     update: [],
     patch: [],
     remove: []

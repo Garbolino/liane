@@ -31,7 +31,8 @@ module.exports = function () {
               createdAt: entry.created_time,
               updatedAt: entry.updated_time
             }, {
-              skipFetch: true
+              skipFetch: true,
+              fbAccessToken: account.accessToken
             }));
           });
         }

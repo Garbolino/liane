@@ -20,7 +20,7 @@ module.exports = function (app) {
       type: Sequelize.STRING
     },
     message: {
-      type: Sequelize.STRING
+      type: Sequelize.TEXT
     },
     link: {
       type: Sequelize.STRING

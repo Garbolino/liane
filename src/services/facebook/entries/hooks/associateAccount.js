@@ -14,7 +14,7 @@ module.exports = function () {
         if(hook.params.accountFacebookId) {
           const service = hook.app.service('facebookAccounts');
           const facebookId = hook.params.accountFacebookId;
-          return service.find({facebookId}).then(res => {
+          return service.find({query: { facebookId }}).then(res => {
             if(res.data.length) {
               const account = res.data[0];
               return hydrate().call(this, hook).then(() => {

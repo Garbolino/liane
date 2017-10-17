@@ -15,9 +15,6 @@ module.exports = function (app) {
     campaigns.belongsToMany(models.users, {
       through: models.campaignUsers
     });
-    campaigns.belongsToMany(models.people, {
-      through: models.interactions
-    });
   };
   return campaigns;
 };

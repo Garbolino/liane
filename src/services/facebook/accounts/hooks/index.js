@@ -3,7 +3,6 @@ const { authenticate } = require('feathers-authentication').hooks;
 const subscribe = require('./subscribe');
 const populateCampaign = require('./populateCampaign');
 const fetchEntries = require('./fetchEntries');
-const fetchEntriesInteraction = require('./fetchEntriesInteraction');
 const associateCampaign = require('./associateCampaign');
 const restrictToCampaign = require('./restrictToCampaign');
 const extendFBToken = require('./extendFBToken');
