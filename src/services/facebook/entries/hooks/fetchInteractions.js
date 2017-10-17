@@ -10,6 +10,7 @@ module.exports = function () {
         'likes'
       ]}).then(data => {
         const defaultItem = {
+          entryId: hook.result.id,
           facebookAccountId: hook.result.accountId
         };
         let promises = [];

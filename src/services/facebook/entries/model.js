@@ -30,6 +30,10 @@ module.exports = function (app) {
     facebookEntries.belongsTo(models.facebookAccounts, {
       foreignKey: 'accountId'
     });
+    facebookEntries.hasMany(models.interactions, {
+      foreignKey: 'entryId',
+      constraints: false
+    });
   };
   return facebookEntries;
 };
