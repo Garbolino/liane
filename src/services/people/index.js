@@ -7,7 +7,9 @@ const filters = require('./filters');
 module.exports = function () {
   const app = this;
   const Model = createModel(app);
-  const paginate = app.get('paginate');
+  const paginate = Object.assign({}, app.get('paginate'), {
+    default: 50
+  });
 
   const options = {
     name: 'people',

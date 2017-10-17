@@ -5,6 +5,7 @@ import { hasUser, displayName } from 'services/auth';
 
 import NewCampaign from 'containers/campaigns/new';
 import UserFBAccounts from 'containers/facebook/user-accounts';
+import AccountPeople from 'containers/people/account-people';
 
 class Application extends Component {
   constructor (props) {
@@ -26,6 +27,8 @@ class Application extends Component {
         <NewCampaign />
         <hr />
         <UserFBAccounts />
+        <hr />
+        <AccountPeople />
       </header>
     )
   }

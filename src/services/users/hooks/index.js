@@ -48,8 +48,6 @@ const populateCampaign = function () {
   };
 };
 
-
-
 module.exports = {
   before: {
     all: [
