@@ -25,14 +25,16 @@ class AccountPeople extends Component {
                 <th>Name</th>
                 <th># Likes</th>
                 <th># Comments</th>
+                <th>Notes</th>
               </tr>
             </thead>
             <tbody>
               {people.map(person => (
                 <tr key={`person-${person.id}`}>
                   <td>{person.name}</td>
-                  <td></td>
-                  <td></td>
+                  <td>{person.likeCount}</td>
+                  <td>{person.commentCount}</td>
+                  <td>Here goes some notes</td>
                 </tr>
               ))}
             </tbody>

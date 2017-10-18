@@ -58,7 +58,6 @@ module.exports = function () {
               // Patch or create person
               return patchOrCreatePerson(data).then(person => {
                 hook.data.personId = person.id;
-                hook.data.origin = 'facebook';
                 delete hook.data.raw;
                 return hook;
               });

@@ -17,9 +17,13 @@ class Application extends Component {
       <header>
         <h1>Liane</h1>
         {hasUser(auth) ? (
-          <p>
-            Hello, {displayName(auth)}!
-            <button onClick={this.props.logout}>Logout</button>
+          <p className="row">
+            <span className="u-pull-left">
+              Hello, {displayName(auth)}!
+            </span>
+            <span className="u-pull-right">
+              <button onClick={this.props.logout}>Logout</button>
+            </span>
           </p>
         ) : (
           <a href={`${liane.server}/auth/facebook`}>Authenticate Link</a>
