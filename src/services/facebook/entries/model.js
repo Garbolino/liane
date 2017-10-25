@@ -23,7 +23,7 @@ module.exports = function (app) {
       type: Sequelize.TEXT
     },
     link: {
-      type: Sequelize.STRING
+      type: Sequelize.TEXT
     }
   });
   facebookEntries.associate = function(models) {

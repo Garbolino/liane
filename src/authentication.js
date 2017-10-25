@@ -7,6 +7,7 @@ const FacebookStrategy = require('passport-facebook');
 module.exports = function () {
   const app = this;
   const config = app.get('authentication');
+  const siteUrl = app.get('url');
 
   // Set up authentication with the secret
   app.configure(authentication(config));
@@ -22,6 +23,7 @@ module.exports = function () {
     name: 'facebook',
     Strategy: FacebookStrategy,
     // authType: 'rerequest',
+    callbackURL: siteUrl + '/auth/facebook/callback',
     successRedirect: '/',
     profileFields: [
       'id',

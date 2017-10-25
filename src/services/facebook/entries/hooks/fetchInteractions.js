@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 module.exports = function () {
 
   function wait (milisseconds) {
@@ -6,50 +8,77 @@ module.exports = function () {
     });
   };
 
-  return async function fetchInteractions (hook) {
+  async function fetch (FB, token, entry, service) {
+
+    let likes = [];
+    let comments = [];
+
+    const likesRes = await FB.api(entry.facebookId + '/likes', {
+      limit: 2000,
+      access_token: token
+    });
+    likes = likes.concat(likesRes.data);
+    // Likes paging
+    if(likesRes.paging) {
+      let likesNext = likesRes.paging.next;
+      while(likesNext !== undefined) {
+        let nextRes = await axios.get(likesNext);
+        likesNext = nextRes.data.paging.next;
+        likes = likes.concat(nextRes.data.data);
+      }
+    }
+
+    const commentsRes = await FB.api(entry.facebookId + '/comments', {
+      limit: 2000,
+      access_token: token
+    });
+    comments = comments.concat(commentsRes.data);
+    // Comments paging
+    if(commentsRes.paging) {
+      let commentsNext = commentsRes.paging.next;
+      while(commentsNext !== undefined) {
+        let nextRes = await axios.get(commentsNext);
+        commentsNext = nextRes.data.paging.next;
+        comments = comments.concat(nextRes.data.data);
+      }
+    }
+
+    const defaultItem = {
+      entryId: entry.id,
+      facebookAccountId: entry.accountId,
+      origin: 'facebook'
+    };
+
+    if(likes.length) {
+      for (const like of likes) {
+        await service.create(Object.assign({
+          raw: like,
+          type: 'like'
+        }, defaultItem));
+      }
+    }
+
+    if(comments.length) {
+      for(const comment of comments) {
+        await service.create(Object.assign({
+          raw: comment,
+          type: 'comment'
+        }, defaultItem));
+      }
+    }
+
+  };
+
+  return function fetchInteractions (hook) {
 
     if(hook.params.fbAccessToken) {
 
       const FB = hook.app.facebook;
-      const id = hook.result.facebookId;
+      const token = hook.params.fbAccessToken;
+      const entry = hook.result;
       const service = hook.app.service('interactions');
 
-      const defaultItem = {
-        entryId: hook.result.id,
-        facebookAccountId: hook.result.accountId,
-        origin: 'facebook'
-      };
-
-      FB.setAccessToken(hook.params.fbAccessToken);
-
-      const data = await FB.api(id, { fields: [
-        'comments',
-        'likes'
-      ]});
-
-      FB.setAccessToken('');
-
-      // Must resolve FB api paging
-
-      if(data.likes && data.likes.data.length) {
-        for (const like of data.likes.data) {
-          await service.create(Object.assign({
-            raw: like,
-            type: 'like'
-          }, defaultItem));
-          await wait(100);
-        }
-      }
-
-      if(data.comments && data.comments.data.length) {
-        for(const comment of data.comments.data) {
-          await service.create(Object.assign({
-            raw: comment,
-            type: 'comment'
-          }, defaultItem));
-          await wait(100);
-        }
-      }
+      return fetch(FB, token, entry, service).then(() => hook);
 
     }
 

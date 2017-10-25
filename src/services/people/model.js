@@ -13,6 +13,7 @@ module.exports = function (app) {
   });
   people.associate = function(models) {
     people.belongsToMany(models.facebookAccounts, {
+      as: 'interaction',
       through: {
         model: models.interactions,
         unique: false

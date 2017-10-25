@@ -2,7 +2,6 @@
 const createService = require('feathers-sequelize');
 const createModel = require('./model');
 const createUsersModel = require('./users/model');
-const createInteractionsModel = require('./interactions/model');
 const hooks = require('./hooks');
 const filters = require('./filters');
 
@@ -10,7 +9,6 @@ module.exports = function () {
   const app = this;
   const Model = createModel(app);
   const usersModel = createUsersModel(app);
-  const interactionsModel = createInteractionsModel(app);
   const paginate = app.get('paginate');
 
   const options = {

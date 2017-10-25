@@ -4,7 +4,9 @@ const config = require('config');
 
 const env = process.env.NODE_ENV || 'development';
 
-const url = config.get('url');
+let url = config.get('url');
+if(process.env[url]) url = process.env[url];
+
 let public, server, cdn;
 if(typeof url == 'string') {
   public = server = cdn = url;

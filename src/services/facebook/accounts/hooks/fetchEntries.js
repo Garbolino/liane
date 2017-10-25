@@ -1,4 +1,5 @@
 const errors = require('feathers-errors');
+const axios = require('axios');
 
 module.exports = function () {
 
@@ -8,31 +9,37 @@ module.exports = function () {
     });
   };
 
-  return async function fetchEntries (hook) {
+  async function fetch (FB, account, service) {
 
-    const FB = hook.app.facebook;
-    const service = hook.app.service('facebookEntries');
-    const account = hook.result;
+    let data = [];
 
-    FB.setAccessToken(account.accessToken);
+    const res = await FB.api(account.facebookId + '/feed', {
+      fields: [
+        'object_id',
+        'parent_id',
+        'message',
+        'link',
+        'type',
+        'created_time',
+        'updated_time'
+      ],
+      limit: 100,
+      access_token: account.accessToken
+    });
 
-    const res = await FB.api(account.facebookId + '/feed', { fields: [
-      'object_id',
-      'parent_id',
-      'message',
-      'link',
-      'type',
-      'created_time',
-      'updated_time'
-    ]});
+    data = data.concat(res.data);
 
-    // Must resolve paging
+    let next = res.paging.next;
 
-    FB.setAccessToken('');
+    while(next !== undefined) {
+      let pageRes = await axios.get(next);
+      next = pageRes.data.paging.next;
+      data = data.concat(pageRes.data.data);
+    }
 
-    if(res.data.length) {
+    if(data.length) {
 
-      for(const entry of res.data) {
+      for(const entry of data) {
 
         await service.create({
           accountId: account.id,
@@ -49,13 +56,19 @@ module.exports = function () {
           fbAccessToken: account.accessToken
         });
 
-        await wait(100);
-
       }
 
     }
 
-    return hook;
+  };
+
+  return function fetchEntries (hook) {
+
+    const FB = hook.app.facebook;
+    const service = hook.app.service('facebookEntries');
+    const account = hook.result;
+
+    return fetch(FB, account, service).then(() => hook);
 
   }
 };

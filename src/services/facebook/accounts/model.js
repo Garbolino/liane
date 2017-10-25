@@ -26,6 +26,7 @@ module.exports = function (app) {
       foreignKey: 'campaignId'
     });
     facebookAccounts.belongsToMany(models.people, {
+      as: 'interaction',
       through: {
         model: models.interactions,
         unique: false

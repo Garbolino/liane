@@ -22,7 +22,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [ fetchEntries(), associateCampaign(), subscribe() ],
+    create: [ associateCampaign(), subscribe(), fetchEntries() ],
     update: [],
     patch: [],
     remove: []

@@ -1,10 +1,11 @@
 const FB = require('fb');
 const crypto = require('crypto');
+const { URL } = require('url');
 
 module.exports = function() {
   const app = this;
   const config = app.get('authentication');
-  const url = app.get('url');
+  const siteUrl = new URL(app.get('url'));
   const { clientID, clientSecret } = config.facebook;
 
   app.set('fbVerifyToken', crypto.randomBytes(12).toString('hex'));
@@ -21,11 +22,17 @@ module.exports = function() {
     client_secret: clientSecret,
     grant_type: 'client_credentials'
   }, res => {
-    // Set page subscription
     FB.setAccessToken(res.access_token);
+    // Set app link url
+    FB.api(clientID, 'post', {
+      link: siteUrl.origin,
+      website_url: siteUrl.origin,
+      app_domains: [siteUrl.hostname]
+    });
+    // Set page subscription
     FB.api(clientID + '/subscriptions', 'post', {
       object: 'page',
-      callback_url: url + '/facebookAccounts/subscriptions',
+      callback_url: siteUrl.origin + '/facebookAccounts/subscriptions',
       fields: [
         'feed',
         'messages',

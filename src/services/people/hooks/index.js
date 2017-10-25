@@ -1,7 +1,9 @@
 const hydrate = require('feathers-sequelize/hooks/hydrate');
 const dehydrate = require('feathers-sequelize/hooks/dehydrate');
 const { populate, discard } = require('feathers-hooks-common');
+
 const parseFacebookData = require('./parseFacebookData');
+const populateInteractions = require('./populateInteractions');
 
 const userInteractionsSchema = {
   include: {
@@ -37,7 +39,9 @@ const countInteractions = function (type) {
 module.exports = {
   before: {
     all: [],
-    find: [],
+    find: [
+      populateInteractions()
+    ],
     get: [],
     create: [ parseFacebookData() ],
     update: [ parseFacebookData() ],
@@ -48,10 +52,11 @@ module.exports = {
   after: {
     all: [],
     find: [
-      populate({ schema: userInteractionsSchema }),
-      countInteractions('comment'),
-      countInteractions('like'),
-      discard('interactions')
+      populateInteractions(),
+      // populate({ schema: userInteractionsSchema }),
+      // countInteractions('comment'),
+      // countInteractions('like'),
+      // discard('interactions')
     ],
     get: [],
     create: [],

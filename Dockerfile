@@ -11,7 +11,7 @@ RUN apk -U upgrade \
      git \
      su-exec \
      tini \
-  && npm install -g yarn nodemon \
+  && npm install -g yarn \
   && update-ca-certificates \
   && rm -rf /tmp/* /var/cache/apk/*
 

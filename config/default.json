@@ -1,5 +1,5 @@
 {
-  "url": "http://localhost:3030",
+  "url": "SITE_URL",
   "port": 3030,
   "public": "../public/",
   "paginate": {
