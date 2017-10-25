@@ -18,7 +18,7 @@ class AccountPeople extends Component {
     if(auth.signedIn && account !== null && people.length) {
       return (
         <section id="account-people">
-          <h3>People</h3>
+          <h4>People</h4>
           <table style={{width: '100%'}}>
             <thead>
               <tr>
