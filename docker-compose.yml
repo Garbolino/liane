@@ -15,7 +15,6 @@ services:
     - /src/node_modules
     - .:/src
     # Uncomment below for production (persist app data)
-    # - ./files:/src/files
     # - ./public:/src/public
     environment:
       NODE_ENV: development
