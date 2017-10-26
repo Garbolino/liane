@@ -12,13 +12,17 @@ module.exports = function (app) {
     facebookData: { type: DataTypes.JSON }
   });
   people.associate = function(models) {
-    people.belongsToMany(models.facebookAccounts, {
-      as: 'interaction',
-      through: {
-        model: models.interactions,
-        unique: false
-      },
-      constraints: false
+    people.hasMany(models.interactions, {
+      as: 'likes',
+      scope: {
+        type: 'like'
+      }
+    });
+    people.hasMany(models.interactions, {
+      as: 'comments',
+      scope: {
+        type: 'comment'
+      }
     });
   };
   return people;

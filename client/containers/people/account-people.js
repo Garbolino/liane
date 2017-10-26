@@ -9,7 +9,13 @@ class AccountPeople extends Component {
   }
   componentWillReceiveProps (nextProps) {
     if(nextProps.auth.signedIn && nextProps.account && !this.queriedPeople) {
-      this.props.findPeople();
+      this.props.findPeople({
+        query: {
+          '$sort': {
+            'likeCount': -1
+          }
+        }
+      });
       this.queriedPeople = true;
     }
   }
@@ -19,7 +25,7 @@ class AccountPeople extends Component {
       return (
         <section id="account-people">
           <h4>People</h4>
-          <table style={{width: '100%'}}>
+          <table>
             <thead>
               <tr>
                 <th>Name</th>
@@ -47,15 +53,20 @@ class AccountPeople extends Component {
   }
 }
 
-const getPeople = function (people) {
-  return Object.keys(people).map(key => people[key]);
+const getPeople = function (index, obj) {
+  let people = [];
+  index.forEach(id => {
+    if(obj[id])
+      people.push(obj[id]);
+  })
+  return people;
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
     auth: state.auth,
     account: state.facebookAccount,
-    people: getPeople(state.people)
+    people: getPeople(state.accountPeople, state.people)
   }
 };
 

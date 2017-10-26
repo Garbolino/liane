@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import auth from './auth';
 import campaigns from './campaigns';
 import people from './people';
+import accountPeople from './accountPeople';
 import facebook from './facebook';
 
 export default function () {
@@ -9,6 +10,7 @@ export default function () {
     auth,
     campaign: campaigns,
     people,
+    accountPeople,
     facebookAccount: facebook
   });
 }
