@@ -4,8 +4,8 @@ services:
     image: aparabolica/liane:latest
     # Comment-out below to pull image from docker hub
     build: .
-    # Comment-out below for production
-    command: nodemon src/
+    # Use `watch.js` for ngrok and nodemon development setup. Comment-out below for production
+    command: node watch.js
     links:
       - postgres
     ports:
