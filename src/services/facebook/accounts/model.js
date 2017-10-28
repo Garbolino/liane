@@ -7,6 +7,7 @@ module.exports = function (app) {
   const facebookAccounts = sequelizeClient.define('facebookAccounts', {
     facebookId: {
       type: Sequelize.STRING,
+      unique: true,
       allowNull: false
     },
     name: {
@@ -25,7 +26,8 @@ module.exports = function (app) {
     facebookAccounts.belongsTo(models.campaigns, {
       foreignKey: 'campaignId'
     });
-    facebookAccounts.hasMany(models.interactions);
+    facebookAccounts.hasMany(models.facebookLikes);
+    facebookAccounts.hasMany(models.facebookComments);
   };
   return facebookAccounts;
 };

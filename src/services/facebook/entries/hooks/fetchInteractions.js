@@ -2,16 +2,13 @@ const axios = require('axios');
 
 module.exports = function () {
 
-  function wait (milisseconds) {
-    return new Promise(resolve => {
-      setTimeout(resolve, milisseconds);
-    });
-  };
+  async function fetch (app, token, entry) {
 
-  async function fetch (FB, token, entry, service) {
+    const FB = app.facebook;
 
     let likes = [];
     let comments = [];
+    let people = [];
 
     const likesRes = await FB.api(entry.facebookId + '/likes', {
       limit: 2000,
@@ -45,27 +42,27 @@ module.exports = function () {
 
     const defaultItem = {
       entryId: entry.id,
-      facebookAccountId: entry.accountId,
-      origin: 'facebook'
+      facebookAccountId: entry.accountId
     };
 
     if(likes.length) {
       for (const like of likes) {
-        await service.create(Object.assign({
-          raw: like,
-          type: 'like'
-        }, defaultItem));
+        people.push(like);
       }
     }
 
     if(comments.length) {
       for(const comment of comments) {
-        await service.create(Object.assign({
-          raw: comment,
-          type: 'comment'
-        }, defaultItem));
+        people.push(comment.from);
       }
     }
+
+    let peopleMap = {};
+    people.map(p => { peopleMap[p.id] = p });
+    people = [];
+    Object.keys(peopleMap).map(id => { people.push(peopleMap[id]) });
+
+    return { people, likes, comments };
 
   };
 
@@ -73,12 +70,56 @@ module.exports = function () {
 
     if(hook.params.fbAccessToken) {
 
-      const FB = hook.app.facebook;
+      const app = hook.app;
       const token = hook.params.fbAccessToken;
       const entry = hook.result;
-      const service = hook.app.service('interactions');
 
-      return fetch(FB, token, entry, service).then(() => hook);
+      const peopleService = hook.app.service('people');
+      const likeService = hook.app.service('facebookLikes');
+      const commentService = hook.app.service('facebookComments');
+
+      return fetch(app, token, entry).then(data => {
+        let peopleJobs = [];
+        for(let person of data.people) {
+          peopleJobs.push(app.jobs.create('people', {
+            title: person.name,
+            data: person
+          }).save());
+        }
+        let promises = [];
+        for(let job of peopleJobs) {
+          promises.push(new Promise(resolve => {
+            job.on('complete', person => {
+              let likes = data.likes.filter(l => l.id == person.facebookId);
+              for(let like of likes) {
+                app.jobs.create('like', {
+                  title: person.name,
+                  data: {
+                    personId: person.id,
+                    entryId: entry.id,
+                    facebookAccountId: entry.accountId
+                  }
+                }).save();
+              }
+              let comments = data.comments.filter(c => c.from.id == person.facebookId);
+              for(let comment of comments) {
+                app.jobs.create('comment', {
+                  title: person.name,
+                  data: {
+                    personId: person.id,
+                    entryId: entry.id,
+                    facebookAccountId: entry.accountId,
+                    facebookId: comment.id,
+                    message: comment.message
+                  }
+                }).save();
+              }
+              resolve();
+            });
+          }));
+        }
+        return Promise.all(promises).then(() => hook);
+      });
 
     }
 

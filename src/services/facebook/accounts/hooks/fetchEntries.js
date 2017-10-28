@@ -29,8 +29,8 @@ module.exports = function () {
 
     data = data.concat(res.data);
 
+    // Paging
     let next = res.paging.next;
-
     while(next !== undefined) {
       let pageRes = await axios.get(next);
       next = pageRes.data.paging.next;

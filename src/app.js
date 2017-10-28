@@ -15,6 +15,8 @@ const middleware = require('./middleware');
 const services = require('./services');
 const appHooks = require('./app.hooks');
 
+const queue = require('./queue');
+
 const facebook = require('./facebook');
 const authentication = require('./authentication');
 
@@ -50,6 +52,8 @@ app.configure(socketio());
 
 app.configure(facebook);
 app.configure(authentication);
+
+app.configure(queue);
 
 // Set up our services (see `services/index.js`)
 app.configure(services);

@@ -23,13 +23,13 @@ module.exports = function () {
           'name',
           [
             sequelize.fn('COUNT',
-              sequelize.fn('DISTINCT', sequelize.col('likes.id'))
+              sequelize.fn('DISTINCT', sequelize.col('facebookLikes.id'))
             ),
             'likeCount'
           ],
           [
             sequelize.fn('COUNT',
-              sequelize.fn('DISTINCT', sequelize.col('comments.id'))
+              sequelize.fn('DISTINCT', sequelize.col('facebookComments.id'))
             ),
             'commentCount'
           ]
@@ -37,14 +37,12 @@ module.exports = function () {
         order: order,
         include: [
           {
-            model: sequelize.models.interactions,
-            as: 'likes',
+            model: sequelize.models.facebookLikes,
             attributes: [],
             duplicating: false
           },
           {
-            model: sequelize.models.interactions,
-            as: 'comments',
+            model: sequelize.models.facebookComments,
             attributes: [],
             duplicating: false
           }

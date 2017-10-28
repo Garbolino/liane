@@ -7,6 +7,7 @@ module.exports = function (app) {
   const facebookEntries = sequelizeClient.define('facebookEntries', {
     facebookId: {
       type: Sequelize.STRING,
+      unique: true,
       allowNull: false
     },
     type: {
@@ -30,9 +31,11 @@ module.exports = function (app) {
     facebookEntries.belongsTo(models.facebookAccounts, {
       foreignKey: 'accountId'
     });
-    facebookEntries.hasMany(models.interactions, {
-      foreignKey: 'entryId',
-      constraints: false
+    facebookEntries.hasMany(models.facebookLikes, {
+      foreignKey: 'entryId'
+    });
+    facebookEntries.hasMany(models.facebookComments, {
+      foreignKey: 'entryId'
     });
   };
   return facebookEntries;

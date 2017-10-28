@@ -15,7 +15,7 @@ module.exports = function (app) {
       type: DataTypes.STRING,
       allowNull: true
     },
-    facebookId: { type: DataTypes.STRING },
+    facebookId: { type: DataTypes.STRING, unique: true },
     facebookData: { type: DataTypes.JSON }
   });
   users.associate = function(models) {
