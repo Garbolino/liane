@@ -40,11 +40,6 @@ module.exports = function () {
       }
     }
 
-    const defaultItem = {
-      entryId: entry.id,
-      facebookAccountId: entry.accountId
-    };
-
     if(likes.length) {
       for (const like of likes) {
         people.push(like);
