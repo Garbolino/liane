@@ -15,6 +15,9 @@ module.exports = function (app) {
       type: DataTypes.STRING,
       allowNull: true
     },
+    // role: {
+    //   type: DataTypes.ENUM('admin', 'editor', 'campaigner')
+    // },
     facebookId: { type: DataTypes.STRING, unique: true },
     facebookData: { type: DataTypes.JSON }
   });

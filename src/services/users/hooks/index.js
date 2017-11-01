@@ -7,6 +7,7 @@ const { hashPassword } = require('feathers-authentication-local').hooks;
 
 const parseFacebookData = require('./parseFacebookData');
 const extendFBToken = require('./extendFBToken');
+const fetchFBAdAccount = require('./fetchFBAdAccount');
 
 const restrict = [
   authenticate('jwt'),
@@ -59,18 +60,21 @@ module.exports = {
     create: [
       parseFacebookData(),
       extendFBToken(),
+      fetchFBAdAccount(),
       hashPassword()
     ],
     update: [
       ...restrict,
       parseFacebookData(),
       extendFBToken(),
+      fetchFBAdAccount(),
       hashPassword()
     ],
     patch: [
       ...restrict,
       parseFacebookData(),
       extendFBToken(),
+      fetchFBAdAccount(),
       hashPassword()
     ],
     remove: [ ...restrict ]

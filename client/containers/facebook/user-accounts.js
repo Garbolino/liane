@@ -36,7 +36,6 @@ class UserFBAccounts extends Component {
       )
     } else if(auth.signedIn && campaign !== null && auth.user.facebookData) {
       const accounts = auth.user.facebookData.accounts.data;
-      console.log(accounts);
       return (
         <section id="facebook-accounts">
           <h3>Facebook Accounts</h3>

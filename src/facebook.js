@@ -4,9 +4,8 @@ const { URL } = require('url');
 
 module.exports = function() {
   const app = this;
-  const config = app.get('authentication');
+  const { clientID, clientSecret } = app.get('facebook');
   const siteUrl = new URL(app.get('url'));
-  const { clientID, clientSecret } = config.facebook;
 
   app.set('fbVerifyToken', crypto.randomBytes(12).toString('hex'));
 
@@ -22,12 +21,12 @@ module.exports = function() {
     client_secret: clientSecret,
     grant_type: 'client_credentials'
   }, res => {
-    FB.setAccessToken(res.access_token);
     // Set app link url
     FB.api(clientID, 'post', {
       link: siteUrl.origin,
       website_url: siteUrl.origin,
-      app_domains: [siteUrl.hostname]
+      app_domains: [siteUrl.hostname],
+      access_token: res.access_token
     });
     // Set page subscription
     FB.api(clientID + '/subscriptions', 'post', {
@@ -39,7 +38,8 @@ module.exports = function() {
         'ratings',
         'mention'
       ],
-      verify_token: app.get('fbVerifyToken')
+      verify_token: app.get('fbVerifyToken'),
+      access_token: res.access_token
     });
   });
 }

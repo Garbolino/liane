@@ -19,6 +19,8 @@ module.exports = function () {
     passwordField: 'password'
   }));
 
+  const facebookConfig = app.get('facebook');
+
   app.configure(oauth2(Object.assign({
     name: 'facebook',
     Strategy: FacebookStrategy,
@@ -43,9 +45,11 @@ module.exports = function () {
       'email',
       'user_friends',
       'manage_pages',
-      'pages_show_list'
+      'pages_show_list',
+      'ads_management',
+      'ads_read'
     ]
-  }, config.facebook)));
+  }, facebookConfig)));
 
   // The `authentication` service is used to create a JWT.
   // The before `create` hook registers strategies that can be used

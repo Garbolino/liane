@@ -2,6 +2,7 @@ const { authenticate } = require('feathers-authentication').hooks;
 
 const subscribe = require('./subscribe');
 const populateCampaign = require('./populateCampaign');
+const fetchAudience = require('./fetchAudience');
 const fetchEntries = require('./fetchEntries');
 const associateCampaign = require('./associateCampaign');
 const restrictToCampaign = require('./restrictToCampaign');
@@ -22,7 +23,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [ associateCampaign(), subscribe(), fetchEntries() ],
+    create: [ associateCampaign(), subscribe(), fetchAudience(), fetchEntries() ],
     update: [],
     patch: [],
     remove: []

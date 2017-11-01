@@ -5,6 +5,7 @@ import { hasUser, displayName } from 'services/auth';
 
 import NewCampaign from 'containers/campaigns/new';
 import UserFBAccounts from 'containers/facebook/user-accounts';
+import AccountAudience from 'containers/audience/account-audience';
 import AccountPeople from 'containers/people/account-people';
 
 class Application extends Component {
@@ -32,6 +33,7 @@ class Application extends Component {
         <hr />
         <UserFBAccounts />
         <hr />
+        <AccountAudience />
         <AccountPeople />
       </header>
     )

@@ -4,7 +4,7 @@ module.exports = function () {
 
   const app = this;
 
-  const { clientSecret } = app.get('authentication').facebook;
+  const { clientSecret } = app.get('facebook');
 
   // Hub signature verification middleware
   const verifyHubSignature = function (req, res, next) {

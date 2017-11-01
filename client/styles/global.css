@@ -1,0 +1,33 @@
+body {
+  background: rgb(255, 255, 255);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Saira Extra Condensed", sans-serif;
+}
+
+h1 {
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 4rem 0;
+  color: #899cd5;
+}
+hr,
+table td,
+table th {
+  border-color: rgba(0,0,0,0.05);
+}
+
+table {
+  width: 100%;
+}
+
+a.button,
+button {
+  background: #fff;
+  border: 0;
+}

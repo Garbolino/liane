@@ -10,6 +10,7 @@ import Application from 'app';
 import "normalize.css";
 import "skeleton-css/css/skeleton.css";
 import 'font-awesome/css/font-awesome.css';
+import 'styles/global.css';
 
 const store = configureStore();
 
