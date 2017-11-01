@@ -6,12 +6,16 @@ class AccountAudience extends Component {
   constructor (props) {
     super(props);
     this.queriedAudience = false;
+    this.getAudience(props);
   }
   componentWillReceiveProps (nextProps) {
-    if(nextProps.auth.signedIn && nextProps.account && !this.queriedAudience) {
+    this.getAudience(nextProps);
+  }
+  getAudience (props) {
+    if(props.auth.signedIn && props.account && !this.queriedAudience) {
       this.props.findAudience({
         query: {
-          facebookAccountId: nextProps.account.id,
+          facebookAccountId: props.account.id,
           '$sort': {
             title: 1
           }

@@ -6,9 +6,13 @@ class AccountPeople extends Component {
   constructor (props) {
     super(props);
     this.queriedPeople = false;
+    this.getPeople(props);
   }
   componentWillReceiveProps (nextProps) {
-    if(nextProps.auth.signedIn && nextProps.account && !this.queriedPeople) {
+    this.getPeople(nextProps);
+  }
+  getPeople (props) {
+    if(props.auth.signedIn && props.account && !this.queriedPeople) {
       this.props.findPeople({
         query: {
           '$sort': {

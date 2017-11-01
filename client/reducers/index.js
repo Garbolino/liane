@@ -6,6 +6,7 @@ import accountPeople from './accountPeople';
 import audience from './audience';
 import accountAudience from './accountAudience';
 import facebook from './facebook';
+import { routerReducer } from 'react-router-redux';
 
 export default function () {
   return combineReducers({
@@ -15,6 +16,7 @@ export default function () {
     accountPeople,
     audience,
     accountAudience,
-    facebookAccount: facebook
+    facebookAccount: facebook,
+    router: routerReducer
   });
 }

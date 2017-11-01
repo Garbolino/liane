@@ -1,54 +1,55 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
+import { hasUser } from 'services/auth';
 import { logout } from 'actions/auth';
-import { hasUser, displayName } from 'services/auth';
+import { withRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 
-import NewCampaign from 'containers/campaigns/new';
-import UserFBAccounts from 'containers/facebook/user-accounts';
-import AccountAudience from 'containers/audience/account-audience';
-import AccountPeople from 'containers/people/account-people';
+import Header from 'containers/header';
+
+import Home from 'scenes/home';
+import Dashboard from 'scenes/dashboard';
+
+const Wrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  #app-header {
+    flex: 0 0 auto;
+    padding: 0 5vw;
+  }
+  #content {
+    flex: 1 1 100%;
+    overflow: auto;
+    padding: 0 5vw;
+  }
+`
 
 class Application extends Component {
-  constructor (props) {
-    super(props);
-  }
   render () {
-    const { auth, campaign } = this.props;
     return (
-      <header>
-        <h1>Liane</h1>
-        {hasUser(auth) ? (
-          <p className="row">
-            <span className="u-pull-left">
-              Hello, {displayName(auth)}!
-            </span>
-            <span className="u-pull-right">
-              <button onClick={this.props.logout}>Logout</button>
-            </span>
-          </p>
-        ) : (
-          <a href={`${liane.server}/auth/facebook`}>Authenticate Link</a>
-        )}
-        <NewCampaign />
-        <hr />
-        <UserFBAccounts />
-        <hr />
-        <AccountAudience />
-        <AccountPeople />
-      </header>
+      <Wrapper>
+        <Header />
+        <section id="content">
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/dashboard" component={Dashboard} />
+          </Switch>
+        </section>
+      </Wrapper>
     )
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    auth: state.auth,
-    campaign: state.campaign
+    auth: state.auth
   }
 }
 
-const mapDispatchToProps = {
-  logout
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Application);
+export default withRouter(connect(mapStateToProps)(Application));

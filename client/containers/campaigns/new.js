@@ -9,7 +9,12 @@ class NewCampaign extends Component {
     this.state = {
       formData: {}
     };
+    const { auth } = this.props;
     this.queriedCampaign = false;
+    if(auth.signedIn) {
+      this.props.findCampaigns();
+      this.queriedCampaign = true;
+    }
     this.handleChange = this.handleChange.bind(this);
     this.create = this.create.bind(this);
   }
