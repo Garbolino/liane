@@ -37,15 +37,20 @@ const config = [
   }
 ];
 
-module.exports = function () {
-  return function fetchAudience (hook) {
+module.exports = function() {
+  return function fetchAudience(hook) {
     const accountId = hook.result.id;
-    const service = hook.app.service('facebookAudience');
-    for(const spec of config) {
-      service.create(Object.assign({
-        facebookAccountId: accountId
-      }, spec));
+    const service = hook.app.service("facebookAudience");
+    for (const spec of config) {
+      service.create(
+        Object.assign(
+          {
+            facebookAccountId: accountId
+          },
+          spec
+        )
+      );
     }
     return hook;
-  }
-}
+  };
+};
