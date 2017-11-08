@@ -9,6 +9,11 @@ const Wrapper = styled.header`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  color: #333;
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
   h1 {
     flex: 1 1 100%;
   }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { hasUser } from 'services/auth';
 import { Route, Link, Switch, Redirect } from 'react-router-dom';
@@ -9,10 +10,13 @@ import UserFBAccounts from 'containers/facebook/user-accounts';
 import Audience from './audience';
 import People from './people';
 
+const Wrapper = styled.section`
+`;
+
 class Dashboard extends Component {
   render () {
     return (
-      <section id="dashboard">
+      <Wrapper id="dashboard" className="content">
         <NewCampaign />
         <UserFBAccounts />
         <Switch>
@@ -22,7 +26,7 @@ class Dashboard extends Component {
         {!hasUser(this.props.auth) && (
           <Redirect to="/" />
         )}
-      </section>
+      </Wrapper>
     );
   }
 }

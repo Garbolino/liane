@@ -11,10 +11,10 @@ h5 {
 }
 
 h1 {
+  font-size: 2em;
   font-weight: 900;
   text-transform: uppercase;
-  margin: 4rem 0;
-  color: #899cd5;
+  margin: 1rem 0;
 }
 hr,
 table td,

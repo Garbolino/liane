@@ -4,7 +4,7 @@ import { authenticate } from 'actions/auth';
 export default function init (store) {
 
   const jwt = localStorage.getItem('feathers-jwt');
-  if(jwt !== null) {
+  if(jwt !== null || document.cookie.indexOf('jwt') !== -1) {
     store.dispatch(authenticate());
   }
 
