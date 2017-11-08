@@ -45,8 +45,14 @@ class AccountAudience extends Component {
               {audience.map(item => (
                 <tr key={`item-${item.id}`}>
                   <td>{item.title}</td>
-                  <td>{this.formatPercent(item.estimate/item.total)}</td>
-                  <td>{this.formatPercent(item.location_estimate/item.location_total)}</td>
+                  <td>
+                    <strong>{this.formatPercent(item.estimate/item.total)}</strong><br />
+                    {item.estimate} / {item.total}
+                  </td>
+                  <td>
+                    <strong>{this.formatPercent(item.location_estimate/item.location_total)}</strong><br />
+                    {item.location_estimate} / {item.location_total}
+                  </td>
                 </tr>
               ))}
             </tbody>

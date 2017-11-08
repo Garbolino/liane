@@ -23,7 +23,7 @@ const Wrapper = styled.div`
     flex: 0 0 auto;
     padding: 0 5vw;
   }
-  #content {
+  .content {
     flex: 1 1 100%;
     overflow: auto;
     padding: 0 5vw;
@@ -35,12 +35,10 @@ class Application extends Component {
     return (
       <Wrapper>
         <Header />
-        <section id="content">
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/dashboard" component={Dashboard} />
-          </Switch>
-        </section>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/dashboard" component={Dashboard} />
+        </Switch>
       </Wrapper>
     )
   }

@@ -40,27 +40,19 @@ class NewCampaign extends Component {
   }
   render () {
     const { auth, campaign } = this.props;
-    if(hasUser(auth)) {
-      if(campaign) {
-        return (
-          <section id="user-campaign">
-            <h3>Campaign: {campaign.name}</h3>
-          </section>
-        )
-      } else {
-        return (
-          <section id="new-campaign">
-            <form onSubmit={this.create}>
-              <input
-                name="name"
-                placeholder="Campaign title"
-                onChange={this.handleChange}
-                />
-              <input type="submit" value="Create campaign" />
-            </form>
-          </section>
-        )
-      }
+    if(hasUser(auth) && !campaign) {
+      return (
+        <section id="new-campaign">
+          <form onSubmit={this.create}>
+            <input
+              name="name"
+              placeholder="Campaign title"
+              onChange={this.handleChange}
+              />
+            <input type="submit" value="Create campaign" />
+          </form>
+        </section>
+      )
     } else {
       return null;
     }
