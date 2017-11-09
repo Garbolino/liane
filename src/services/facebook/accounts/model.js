@@ -1,13 +1,12 @@
 // See http://docs.sequelizejs.com/en/latest/docs/models-definition/
 // for more of what you can do here.
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 
-module.exports = function (app) {
-  const sequelizeClient = app.get('sequelizeClient');
-  const facebookAccounts = sequelizeClient.define('facebookAccounts', {
+module.exports = function(app) {
+  const sequelizeClient = app.get("sequelizeClient");
+  const facebookAccounts = sequelizeClient.define("facebookAccounts", {
     facebookId: {
       type: Sequelize.STRING,
-      unique: true,
       allowNull: false
     },
     name: {
@@ -19,12 +18,12 @@ module.exports = function (app) {
     },
     accessToken: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: true
     }
   });
   facebookAccounts.associate = function(models) {
     facebookAccounts.belongsTo(models.campaigns, {
-      foreignKey: 'campaignId'
+      foreignKey: "campaignId"
     });
     facebookAccounts.hasMany(models.facebookLikes);
     facebookAccounts.hasMany(models.facebookComments);

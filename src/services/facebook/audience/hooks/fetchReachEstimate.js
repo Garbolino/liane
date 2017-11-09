@@ -42,7 +42,7 @@ module.exports = function() {
                 countries: ["BR"]
               }
             },
-            hook.data.targetingSpec
+            JSON.parse(hook.data.targetingSpec)
           );
 
           // Get account total audience

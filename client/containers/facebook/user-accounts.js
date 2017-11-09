@@ -1,58 +1,45 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { selectAccount, findAccount } from 'actions/facebook';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { selectAccount, findAccount } from "actions/facebook";
 
 class UserFBAccounts extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
-    this.queriedAccount = false;
     this.selectAccount = this.selectAccount.bind(this);
-  }
-  componentWillReceiveProps (nextProps) {
-    if(nextProps.auth.signedIn && !this.queriedAccount) {
-      this.props.findAccount();
-      this.queriedAccount = true;
-    }
   }
   selectAccount(account) {
     const self = this;
-    return function (ev) {
+    return function(ev) {
       ev.preventDefault();
       self.props.selectAccount({
         facebookId: account.id,
         name: account.name,
         accessToken: account.access_token,
-        category: account.category
+        category: account.category,
+        campaignId: self.props.campaignId
       });
-    }
+    };
   }
-  render () {
-    const { auth, campaign, account } = this.props;
-    if(auth.signedIn && account) {
-      return (
-        <section id="campaign-account">
-          <h3>Facebook Account: {account.name}</h3>
-        </section>
-      )
-    } else if(auth.signedIn && campaign !== null && auth.user.facebookData) {
+  render() {
+    const { auth } = this.props;
+    if (auth.signedIn && auth.user.facebookData) {
       const accounts = auth.user.facebookData.accounts.data;
       return (
         <section id="facebook-accounts">
-          <h3>Facebook Accounts</h3>
-          <p>Select a Facebook Account for your campaign.</p>
           <ul>
             {accounts.map(account => (
               <li key={`account-${account.id}`}>
                 <a
                   href="javascript:void(0);"
-                  onClick={this.selectAccount(account)}>
-                    {account.name}
+                  onClick={this.selectAccount(account)}
+                >
+                  {account.name}
                 </a>
               </li>
             ))}
           </ul>
         </section>
-      )
+      );
     } else {
       return null;
     }
@@ -61,10 +48,8 @@ class UserFBAccounts extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    auth: state.auth,
-    campaign: state.campaign,
-    account: state.facebookAccount
-  }
+    auth: state.auth
+  };
 };
 
 const mapDispatchToProps = {

@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { hasUser } from 'services/auth';
-import { Route, Link, Switch, Redirect } from 'react-router-dom';
+import React, { Component } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import { hasUser } from "services/auth";
+import { Route, Link, Switch, Redirect } from "react-router-dom";
 
 const Wrapper = styled.section`
   display: flex;
@@ -26,27 +26,34 @@ const Wrapper = styled.section`
       color: #333;
     }
   }
-`
+`;
 
 const BigText = styled.h2`
   font-size: 4em;
   font-family: "Saira Extra Condensed", sans-serif;
-`
+`;
 
 class Home extends Component {
-  render () {
+  render() {
     return (
       <Wrapper id="home" className="content">
-        <BigText>An Electoral Toolkit for Activist Campaigns</BigText>
-        <p>
-          <a className="button" href={`${liane.server}/auth/facebook`}>Start now</a>
-        </p>
-        <p>
-          <a href={`${liane.server}/auth/facebook`}>I already have an account</a>
-        </p>
-        {hasUser(this.props.auth) &&
+        {hasUser(this.props.auth) ? (
           <Redirect to="/dashboard" />
-        }
+        ) : (
+          <div>
+            <BigText>An Electoral Toolkit for Activist Campaigns</BigText>
+            <p>
+              <a className="button" href={`${liane.server}/auth/facebook`}>
+                Start now
+              </a>
+            </p>
+            <p>
+              <a href={`${liane.server}/auth/facebook`}>
+                I already have an account
+              </a>
+            </p>
+          </div>
+        )}
       </Wrapper>
     );
   }
@@ -55,7 +62,7 @@ class Home extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     auth: state.auth
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps)(Home);

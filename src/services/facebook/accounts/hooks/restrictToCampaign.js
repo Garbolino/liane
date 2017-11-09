@@ -1,13 +1,32 @@
-const errors = require('feathers-errors');
+const errors = require("feathers-errors");
 
-module.exports = function () {
+module.exports = function() {
   return function(hook) {
-    if(hook.params.provider) {
-      if(!hook.params.campaign) {
-        throw new errors.BadRequest('You don\'t have an active campaign.');
+    if (hook.params.provider) {
+      const association = {
+        include: [
+          {
+            model: hook.app.service("campaigns").Model,
+            where: { campaignId: hook.params.campaignId }
+          }
+        ]
+      };
+      switch (hook.type) {
+        case "before":
+          if (!hook.params.sequelize) hook.params.sequelize = {};
+          Object.assign(hook.params.sequelize, association, { raw: false });
+          return hook;
+          break;
+        case "after":
+          return hydrate(association)
+            .call(this, hook)
+            .then(() => {
+              return dehydrate().call(this, hook);
+            });
+          break;
       }
-      hook.params.query.campaignId = hook.params.campaign.id;
+    } else {
+      return hook;
     }
-    return hook;
-  }
+  };
 };

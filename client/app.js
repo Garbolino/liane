@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { hasUser } from 'services/auth';
-import { logout } from 'actions/auth';
-import { withRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
+import React, { Component } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import { hasUser } from "services/auth";
+import { logout } from "actions/auth";
+import { withRouter, Route, Link, Switch, Redirect } from "react-router-dom";
 
-import Header from 'containers/header';
+import Header from "containers/header";
 
-import Home from 'scenes/home';
-import Dashboard from 'scenes/dashboard';
+import Home from "scenes/home";
+import Dashboard from "scenes/dashboard";
+import Campaign from "scenes/dashboard/campaign";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -28,10 +29,13 @@ const Wrapper = styled.div`
     overflow: auto;
     padding: 0 5vw;
   }
-`
+`;
 
 class Application extends Component {
-  render () {
+  constructor(props) {
+    super(props);
+  }
+  render() {
     return (
       <Wrapper>
         <Header />
@@ -40,14 +44,14 @@ class Application extends Component {
           <Route path="/dashboard" component={Dashboard} />
         </Switch>
       </Wrapper>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
     auth: state.auth
-  }
-}
+  };
+};
 
 export default withRouter(connect(mapStateToProps)(Application));

@@ -1,14 +1,18 @@
 // See http://docs.sequelizejs.com/en/latest/docs/models-definition/
 // for more of what you can do here.
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const DataTypes = Sequelize.DataTypes;
 
-module.exports = function (app) {
-  const sequelizeClient = app.get('sequelizeClient');
-  const campaigns = sequelizeClient.define('campaigns', {
+module.exports = function(app) {
+  const sequelizeClient = app.get("sequelizeClient");
+  const campaigns = sequelizeClient.define("campaigns", {
     name: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   });
   campaigns.associate = function(models) {

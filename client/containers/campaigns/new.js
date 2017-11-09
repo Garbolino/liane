@@ -1,61 +1,65 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { hasUser } from 'services/auth';
-import { createCampaign, findCampaigns } from 'actions/campaigns';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { hasUser } from "services/auth";
+import { createCampaign } from "actions/campaigns";
 
 class NewCampaign extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formData: {}
+      formData: {},
+      showForm: false
     };
     const { auth } = this.props;
-    this.queriedCampaign = false;
-    if(auth.signedIn) {
-      this.props.findCampaigns();
-      this.queriedCampaign = true;
-    }
     this.handleChange = this.handleChange.bind(this);
+    this.handleOnClick = this.handleOnClick.bind(this);
     this.create = this.create.bind(this);
   }
-  componentWillReceiveProps (nextProps) {
-    if(nextProps.auth.signedIn && !this.queriedCampaign) {
-      this.props.findCampaigns();
-      this.queriedCampaign = true;
-    }
+  handleOnClick(e) {
+    e.preventDefault();
+    this.setState({ showForm: !this.state.showForm });
   }
-  handleChange (ev) {
+  handleChange(ev) {
     const { formData } = this.state;
     const { target } = ev;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     this.setState({
-      formData: Object.assign({}, formData, {[target.name]: value})
+      formData: Object.assign({}, formData, { [target.name]: value })
     });
   }
-  create (ev) {
+  create(ev) {
     ev.preventDefault();
     const { createCampaign } = this.props;
     const { formData } = this.state;
     createCampaign(formData);
   }
-  render () {
+  render() {
     const { auth, campaign } = this.props;
-    if(hasUser(auth) && !campaign) {
-      return (
-        <section id="new-campaign">
+    const { showForm } = this.state;
+    return (
+      <section id="new-campaign">
+        {showForm ? (
           <form onSubmit={this.create}>
             <input
               name="name"
               placeholder="Campaign title"
               onChange={this.handleChange}
-              />
-            <input type="submit" value="Create campaign" />
+            />
+            <br />
+            <input
+              name="description"
+              placeholder="Campaign description"
+              onChange={this.handleChange}
+            />
+            <br />
+            <input type="submit" value="Submit" />
+            <button onClick={this.handleOnClick}>Cancel</button>
           </form>
-        </section>
-      )
-    } else {
-      return null;
-    }
+        ) : (
+          <button onClick={this.handleOnClick}>Create campaign</button>
+        )}
+      </section>
+    );
   }
 }
 
@@ -63,12 +67,11 @@ const mapStateToProps = (state, ownProps) => {
   return {
     auth: state.auth,
     campaign: state.campaign
-  }
+  };
 };
 
 const mapDispatchToProps = {
-  createCampaign,
-  findCampaigns
+  createCampaign
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewCampaign);
