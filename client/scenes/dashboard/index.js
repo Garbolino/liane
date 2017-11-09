@@ -6,9 +6,6 @@ import { Route, Link, Switch, Redirect } from "react-router-dom";
 
 import CampaignList from "containers/campaigns/list";
 
-import Campaign from "./campaign";
-import Account from "./account";
-
 const Wrapper = styled.section``;
 
 class Dashboard extends Component {
@@ -19,11 +16,6 @@ class Dashboard extends Component {
     return (
       <Wrapper id="dashboard" className="content">
         <CampaignList />
-        <Route exact path="/dashboard/campaign/:id" component={Campaign} />
-        <Route
-          path="/dashboard/campaign/:id/account/:accountId"
-          component={Account}
-        />
         {this.shouldRedirect(this.props.auth) && <Redirect to="/" />}
       </Wrapper>
     );

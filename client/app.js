@@ -10,6 +10,7 @@ import Header from "containers/header";
 import Home from "scenes/home";
 import Dashboard from "scenes/dashboard";
 import Campaign from "scenes/dashboard/campaign";
+import Account from "scenes/dashboard/account";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -41,6 +42,11 @@ class Application extends Component {
         <Header />
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route
+            path="/dashboard/campaign/:id/account/:accountId"
+            component={Account}
+          />
+          <Route path="/dashboard/campaign/:id" component={Campaign} />
           <Route path="/dashboard" component={Dashboard} />
         </Switch>
       </Wrapper>

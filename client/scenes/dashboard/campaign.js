@@ -6,15 +6,14 @@ import { Route, Link, Switch, Redirect } from "react-router-dom";
 
 import Campaign from "containers/campaigns/campaign";
 
-import Audience from "./audience";
-import People from "./people";
+// import Audience from "./audience";
+// import People from "./people";
 
 class DashboardCampaign extends Component {
   constructor(props) {
     super(props);
     this.queriedCampaign = false;
     this.getCampaign(props);
-    console.log(props);
   }
   componentWillReceiveProps(nextProps) {
     this.getCampaign(nextProps);

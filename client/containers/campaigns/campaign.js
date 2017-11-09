@@ -12,7 +12,7 @@ class Campaign extends Component {
     const { campaign } = this.props;
     if (campaign) {
       return (
-        <section id="campaign">
+        <section id="campaign" className="content">
           <h4>Campaign: {campaign.name}</h4>
           <CampaignAccounts campaignId={campaign.id} />
           <AddAccountToCampaign campaignId={campaign.id} />

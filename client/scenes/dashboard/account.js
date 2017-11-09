@@ -21,8 +21,11 @@ class DashboardAccount extends Component {
   }
   render() {
     const { campaign, account } = this.props;
-    console.log(this.props);
-    return <div>account</div>;
+    return (
+      <section id="account" className="content">
+        {account ? <h4>Account: {account.name}</h4> : ""}
+      </section>
+    );
   }
 }
 
